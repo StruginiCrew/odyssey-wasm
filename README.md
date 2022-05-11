@@ -26,6 +26,18 @@ q.sections
 q.section(1)
 q.section(2)
 q.question(1, 1)
-q.select_answer(1, 1, 1)
-q.next_question()
+q = q.select_answer(1, 1, 1)
+```
+
+To test the dynamic quiz:
+```js
+p = create_point_quiz()
+p.title
+p.points
+p.section(1) // Should have 2 questions
+p.section(2) // Should have 0 questions for now (visibility based on points)
+p = p.select_answer(1, 1, 1)
+p = p.select_answer(1, 2, 1)
+p.points // Should have 2 good points
+p.section(2) // Should have 1 question now
 ```
