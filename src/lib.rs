@@ -22,5 +22,6 @@ pub fn greet() {
 
 #[wasm_bindgen]
 pub fn create_quiz(json_input: String) -> Option<Quiz> {
+    console_error_panic_hook::set_once();
     Quiz::new(json_input)
 }
