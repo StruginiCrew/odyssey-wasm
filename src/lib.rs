@@ -13,5 +13,11 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 #[wasm_bindgen]
 pub fn create_quiz(json_input: String) -> Quiz {
     console_error_panic_hook::set_once();
-    Quiz::new(json_input)
+    Quiz::new(json_input, None)
+}
+
+#[wasm_bindgen]
+pub fn restore_quiz(json_input: String, event_json_input: String) -> Quiz {
+    console_error_panic_hook::set_once();
+    Quiz::new(json_input, Some(event_json_input))
 }

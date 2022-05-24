@@ -30,3 +30,10 @@ q.question(1) // Check that Question 1 is now answered and Answer 1 is now selec
 q.input_answer(3, "yo") // Input "yo" as answer to Question 3
 q.question(1) // Check that Question 3 is now answered and Answer 1 is now selected and contains "yo"
 ```
+
+Quiz can be restored with events:
+```js
+events_json = JSON.stringify([{event: "selectAnswer", questionId: 1, answerId: 1}])
+q = create_open_survey(events_json)
+q.question(1) // Check that Question 1 is now answered and Answer 1 is now selected
+```

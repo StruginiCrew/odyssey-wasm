@@ -160,7 +160,12 @@ const open_exam_quiz_input = `
 }
 `
 
+const event_input = JSON.stringify([
+  { event: "selectAnswer", questionId: 1, answerId: 1}
+])
+
 window.wasm = wasm;
 
-window.create_open_survey = function() { return new wasm.Quiz(open_survey_quiz_input) }
-window.create_open_exam = function() { return new wasm.Quiz(open_exam_quiz_input) }
+window.event_input = event_input
+window.create_open_survey = function(event_input) { return new wasm.Quiz(open_survey_quiz_input, event_input) }
+window.create_open_exam = function(event_input) { return new wasm.Quiz(open_exam_quiz_input, event_input) }

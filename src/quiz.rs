@@ -9,10 +9,13 @@ pub struct Quiz {
 #[wasm_bindgen]
 impl Quiz {
     #[wasm_bindgen(constructor)]
-    pub fn new(input: String) -> Quiz {
-        Quiz {
-            runner: Runner::new(&input).unwrap(),
-        }
+    pub fn new(input: String, event_input: Option<String>) -> Quiz {
+        let runner = match event_input {
+            Some(event_input) => Runner::new_with_events(&input, &event_input).unwrap(),
+            None => Runner::new(&input).unwrap(),
+        };
+
+        Quiz { runner }
     }
 
     #[wasm_bindgen(getter)]
