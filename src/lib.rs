@@ -11,17 +11,7 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-extern "C" {
-    fn alert(s: &str);
-}
-
-#[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, odyssey!");
-}
-
-#[wasm_bindgen]
-pub fn create_quiz(json_input: String) -> Option<Quiz> {
+pub fn create_quiz(json_input: String) -> Quiz {
     console_error_panic_hook::set_once();
     Quiz::new(json_input)
 }

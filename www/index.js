@@ -1,57 +1,76 @@
 import * as wasm from "odyssey";
 
-const simple_quiz_input = `
+const open_survey_quiz_input = `
 {
-  "title": "Simple quiz",
-  "description": "Basic quiz without any fancy interactions",
+  "title": "Open survey quiz",
+  "description": "A free form survey",
+  "mode": "open",
   "sections": [
     {
-      "title": "Section A",
-      "content": "First section",
+      "id": 1,
+      "title": "s1 title",
+      "description": "s1 description",
       "questions": [
         {
-          "title": "Question AA",
-          "content": "First question in first section",
+          "id": 1,
+          "title": "q1 title",
+          "content": "q1 content",
           "mode": "select",
+          "minEntries": 1,
+          "maxEntries": 1,
           "answers": [
-            { "content": "Answer AAA" },
-            { "content": "Answer AAB" },
-            { "content": "Answer AAC" }
+            {
+              "id": 1,
+              "content": "q1a1 content"
+            },
+            {
+              "id": 2,
+              "content": "q1a2 content"
+            }
           ]
         },
         {
-          "title": "Question AB",
-          "content": "Second question in first section",
-          "mode": "multiSelect",
+          "id": 2,
+          "title": "q2 title",
+          "content": "q2 content",
+          "mode": "select",
+          "minEntries": 2,
           "answers": [
-            { "content": "Answer ABA" },
-            { "content": "Answer ABB" },
-            { "content": "Answer ABC" }
+            {
+              "id": 1,
+              "content": "q2a1 content"
+            },
+            {
+              "id": 2,
+              "content": "q2a2 content"
+            },
+            {
+              "id": 3,
+              "content": "q2a3 content"
+            }
           ]
         }
       ]
     },
     {
-      "title": "Section B",
-      "content": "Second section",
+      "id": 2,
+      "title": "s2 title",
+      "description": "s2 description",
       "questions": [
         {
-          "title": "Question BA",
-          "content": "First question in second section",
-          "mode": "select",
-          "answers": [
-            { "content": "Answer BAA" },
-            { "content": "Answer BAB" },
-            { "content": "Answer BAC" }
-          ]
+          "id": 3,
+          "title": "q3 title",
+          "content": "q3 content",
+          "mode": "input",
+          "maxEntries": 1
         },
         {
-          "title": "Question BB",
-          "content": "Second question in second section",
+          "id": 4,
+          "title": "q4 title",
+          "content": "q4 content",
           "mode": "input",
-          "answers": [
-            { "content": "Answer BBA" }
-          ]
+          "maxEntries": 3,
+          "minEntries": 1
         }
       ]
     }
@@ -59,65 +78,81 @@ const simple_quiz_input = `
 }
 `
 
-const point_quiz_input = `
+const open_exam_quiz_input = `
 {
-  "title": "Point quiz",
-  "description": "Point counting quiz with conditionals based on amount of points",
-  "points": {
-    "good": "A good person score",
-    "bad": "A bad person score"
-  },
+  "title": "Open exam quiz",
+  "description": "A free form exam",
+  "mode": "open",
   "sections": [
     {
-      "title": "Section A",
-      "content": "First section",
+      "id": 1,
+      "title": "s1 title",
+      "description": "s1 description",
       "questions": [
         {
-          "title": "Question AA",
-          "content": "First question in first section",
+          "id": 1,
+          "title": "q1 title",
+          "content": "q1 content",
           "mode": "select",
+          "minEntries": 1,
+          "maxEntries": 1,
           "answers": [
-            { "content": "Answer AAA", "triggers": [{ "condition": true, "actions": [{"changePoint": {"good": 1}}]}] },
-            { "content": "Answer AAB", "triggers": [{"changePoint": {"bad": 1}}] },
-            { "content": "Answer AAC" }
+            {
+              "id": 1,
+              "content": "q1a1 content",
+              "correct": true
+            },
+            {
+              "id": 2,
+              "content": "q1a2 content"
+            }
           ]
         },
         {
-          "title": "Question AB",
-          "content": "Second question in first section",
-          "mode": "multiSelect",
-          "visible": {"gt": [{"get": ["answeredQuestionCount"]}, 0]},
+          "id": 2,
+          "title": "q2 title",
+          "content": "q2 content",
+          "mode": "select",
+          "minEntries": 2,
+          "minCorrectEntries": 1,
           "answers": [
-            { "content": "Answer ABA", "triggers": [{ "condition": true, "actions": [{"changePoint": {"good": 1}}]}] },
-            { "content": "Answer ABB", "triggers": [{"changePoint": {"bad": 1}}] },
-            { "content": "Answer ABC" }
+            {
+              "id": 1,
+              "content": "q2a1 content",
+              "correct": true
+            },
+            {
+              "id": 2,
+              "content": "q2a2 content",
+              "correct": true
+            },
+            {
+              "id": 3,
+              "content": "q2a3 content"
+            }
           ]
         }
       ]
     },
     {
-      "title": "Section B",
-      "content": "Second section",
+      "id": 2,
+      "title": "s2 title",
+      "description": "s2 description",
       "questions": [
         {
-          "title": "Question BA",
-          "content": "First question in second section",
-          "mode": "select",
-          "visible": {"gt": [{"get": ["goodPointCount"]}, 1]},
-          "answers": [
-            { "content": "Answer BAA" },
-            { "content": "Answer BAB" },
-            { "content": "Answer BAC" }
-          ]
+          "id": 3,
+          "title": "q3 title",
+          "content": "q3 content",
+          "mode": "input",
+          "maxEntries": 1
         },
         {
-          "title": "Question BB",
-          "content": "Second question in second section",
+          "id": 4,
+          "title": "q4 title",
+          "content": "q4 content",
           "mode": "input",
-          "visible": {"gt": [{"get": ["badPointCount"]}, 1]},
-          "answers": [
-            { "content": "Answer BBA" }
-          ]
+          "maxEntries": 3,
+          "minEntries": 1
         }
       ]
     }
@@ -127,5 +162,5 @@ const point_quiz_input = `
 
 window.wasm = wasm;
 
-window.create_simple_quiz = function() { return new wasm.Quiz(simple_quiz_input) }
-window.create_point_quiz = function() { return new wasm.Quiz(point_quiz_input) }
+window.create_open_survey = function() { return new wasm.Quiz(open_survey_quiz_input) }
+window.create_open_exam = function() { return new wasm.Quiz(open_exam_quiz_input) }
