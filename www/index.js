@@ -161,7 +161,7 @@ const open_exam_quiz_input = `
 `
 
 const event_input = JSON.stringify([
-  { event: "selectAnswer", questionId: 1, answerId: 1}
+  { event: "selectAnswers", questionId: 1, answerId: 1}
 ])
 
 window.wasm = wasm;

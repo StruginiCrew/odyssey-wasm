@@ -19,58 +19,110 @@ impl Quiz {
     }
 
     #[wasm_bindgen(getter)]
-    pub fn title(&self) -> String {
-        self.runner.quiz_view().unwrap().title()
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn description(&self) -> String {
-        self.runner.quiz_view().unwrap().description()
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn answered_questions_count(&self) -> usize {
-        self.runner.quiz_view().unwrap().answered_question_count()
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn mode(&self) -> String {
-        match self.runner.quiz_view().unwrap().mode() {
-            QuizMode::Open => "open".to_string(),
-            QuizMode::Linear => "linear".to_string(),
+    pub fn title(&self) -> Result<String, JsValue> {
+        match self.runner.quiz_view() {
+            Ok(quiz_view) => Ok(quiz_view.title()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
         }
     }
 
     #[wasm_bindgen(getter)]
-    pub fn sections(&self) -> JsValue {
-        let view = self.runner.quiz_view().unwrap();
+    pub fn description(&self) -> Result<String, JsValue> {
+        match self.runner.quiz_view() {
+            Ok(quiz_view) => Ok(quiz_view.description()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
+    }
 
-        JsValue::from_serde(&view.sections()).unwrap()
+    #[wasm_bindgen(getter)]
+    pub fn answered_questions_count(&self) -> Result<usize, JsValue> {
+        match self.runner.quiz_view() {
+            Ok(quiz_view) => Ok(quiz_view.answered_question_count()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn mode(&self) -> Result<String, JsValue> {
+        match self.runner.quiz_view() {
+            Ok(quiz_view) => Ok(match quiz_view.mode() {
+                QuizMode::Open => "open".to_string(),
+                QuizMode::Linear => "linear".to_string(),
+            }),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn sections(&self) -> Result<JsValue, JsValue> {
+        match self.runner.quiz_view() {
+            Ok(quiz_view) => Ok(serde_wasm_bindgen::to_value(&quiz_view.sections())?),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
     }
 
     #[wasm_bindgen]
-    pub fn section(&self, section_number: Id) -> JsValue {
-        let view = self.runner.section_view(section_number).unwrap();
-
-        JsValue::from_serde(&view).unwrap()
+    pub fn section(&self, section_number: Id) -> Result<JsValue, JsValue> {
+        match self.runner.section_view(section_number) {
+            Ok(view) => Ok(serde_wasm_bindgen::to_value(&view)?),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
     }
 
     #[wasm_bindgen]
-    pub fn question(&self, question_number: Id) -> JsValue {
-        let view = self.runner.question_view(question_number).unwrap();
-
-        JsValue::from_serde(&view).unwrap()
+    pub fn question(&self, question_number: Id) -> Result<JsValue, JsValue> {
+        match self.runner.question_view(question_number) {
+            Ok(view) => Ok(serde_wasm_bindgen::to_value(&view)?),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
     }
 
     #[wasm_bindgen]
-    pub fn select_answer(&mut self, question_number: Id, answer_number: Id) {
-        self.runner
-            .select_answer(question_number, answer_number)
-            .unwrap();
+    pub fn select_answer(&mut self, question_number: Id, answer_number: Id) -> Result<(), JsValue> {
+        match self
+            .runner
+            .select_answers(question_number, vec![answer_number])
+        {
+            Ok(_) => Ok(()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
     }
 
     #[wasm_bindgen]
-    pub fn input_answer(&mut self, question_number: Id, input: String) {
-        self.runner.input_answer(question_number, input).unwrap();
+    pub fn input_answer(&mut self, question_number: Id, input: String) -> Result<(), JsValue> {
+        match self.runner.input_answers(question_number, vec![input]) {
+            Ok(_) => Ok(()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn select_answers(
+        &mut self,
+        question_number: Id,
+        answer_numbers: Vec<Id>,
+    ) -> Result<(), JsValue> {
+        match self.runner.select_answers(question_number, answer_numbers) {
+            Ok(_) => Ok(()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn input_answers(&mut self, question_number: Id, inputs: JsValue) -> Result<(), JsValue> {
+        let inputs: Vec<String> = serde_wasm_bindgen::from_value(inputs)?;
+
+        match self.runner.input_answers(question_number, inputs) {
+            Ok(_) => Ok(()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn clear_answers(&mut self, question_number: Id) -> Result<(), JsValue> {
+        match self.runner.clear_answers(question_number) {
+            Ok(_) => Ok(()),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
     }
 }
