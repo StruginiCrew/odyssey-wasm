@@ -2,6 +2,8 @@ import * as wasm from "odyssey";
 
 const open_survey_quiz_input = `
 {
+  "id": "open_survey_quiz",
+  "version": 1,
   "title": "Open survey quiz",
   "description": "A free form survey",
   "mode": "open",
@@ -80,6 +82,8 @@ const open_survey_quiz_input = `
 
 const open_exam_quiz_input = `
 {
+  "id": "open_exam_quiz",
+  "version": 1,
   "title": "Open exam quiz",
   "description": "A free form exam",
   "mode": "open",

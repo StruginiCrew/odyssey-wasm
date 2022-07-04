@@ -125,4 +125,12 @@ impl Quiz {
             Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
         }
     }
+
+    #[wasm_bindgen(getter)]
+    pub fn event_log(&self) -> Result<JsValue, JsValue> {
+        match serde_wasm_bindgen::to_value(&self.runner.event_log().unwrap().to_string()) {
+            Ok(log) => Ok(log),
+            Err(err) => return Err(serde_wasm_bindgen::to_value(&format!("{}", err))?),
+        }
+    }
 }
