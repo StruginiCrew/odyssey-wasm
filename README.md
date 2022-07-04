@@ -37,3 +37,10 @@ events_json = JSON.stringify([{event: "selectAnswer", questionId: 1, answerId: 1
 q = create_open_survey(events_json)
 q.question(1) // Check that Question 1 is now answered and Answer 1 is now selected
 ```
+
+Quiz can be queried for current event log:
+```js
+q = create_open_survey()
+q.select_answer(1, 1) // Answer 1 in Question 1
+q.event_log // Return JSON string of current event log
+```
