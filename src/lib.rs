@@ -11,13 +11,19 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-pub fn create_quiz(json_input: String) -> Quiz {
+pub fn create_quiz(json_input: String) -> Result<Quiz, JsValue> {
     console_error_panic_hook::set_once();
-    Quiz::new(json_input, None)
+    match Quiz::new(json_input, None) {
+        Ok(quiz) => Ok(quiz),
+        Err(err) => Err(serde_wasm_bindgen::to_value(&format!("{:?}", err))?),
+    }
 }
 
 #[wasm_bindgen]
-pub fn restore_quiz(json_input: String, event_json_input: String) -> Quiz {
+pub fn restore_quiz(json_input: String, event_json_input: String) -> Result<Quiz, JsValue> {
     console_error_panic_hook::set_once();
-    Quiz::new(json_input, Some(event_json_input))
+    match Quiz::new(json_input, Some(event_json_input)) {
+        Ok(quiz) => Ok(quiz),
+        Err(err) => Err(serde_wasm_bindgen::to_value(&format!("{:?}", err))?),
+    }
 }

@@ -1,162 +1,76 @@
 import * as wasm from "odyssey";
 
-const open_survey_quiz_input = `
-{
-  "id": "open_survey_quiz",
-  "version": 1,
-  "title": "Open survey quiz",
-  "description": "A free form survey",
-  "mode": "open",
-  "sections": [
-    {
-      "id": 1,
-      "title": "s1 title",
-      "description": "s1 description",
-      "questions": [
-        {
-          "id": 1,
-          "title": "q1 title",
-          "content": "q1 content",
-          "mode": "select",
-          "minEntries": 1,
-          "maxEntries": 1,
-          "answers": [
-            {
-              "id": 1,
-              "content": "q1a1 content"
-            },
-            {
-              "id": 2,
-              "content": "q1a2 content"
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "title": "q2 title",
-          "content": "q2 content",
-          "mode": "select",
-          "minEntries": 2,
-          "answers": [
-            {
-              "id": 1,
-              "content": "q2a1 content"
-            },
-            {
-              "id": 2,
-              "content": "q2a2 content"
-            },
-            {
-              "id": 3,
-              "content": "q2a3 content"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "title": "s2 title",
-      "description": "s2 description",
-      "questions": [
-        {
-          "id": 3,
-          "title": "q3 title",
-          "content": "q3 content",
-          "mode": "input",
-          "maxEntries": 1
-        },
-        {
-          "id": 4,
-          "title": "q4 title",
-          "content": "q4 content",
-          "mode": "input",
-          "maxEntries": 3,
-          "minEntries": 1
-        }
-      ]
-    }
-  ]
-}
-`
-
 const open_exam_quiz_input = `
 {
-  "id": "open_exam_quiz",
+  "uid": "open_exam_quiz",
   "version": 1,
-  "title": "Open exam quiz",
-  "description": "A free form exam",
+  "title": "Animals exam",
+  "description": "How well do you know animals?",
   "mode": "open",
   "sections": [
     {
       "id": 1,
-      "title": "s1 title",
-      "description": "s1 description",
+      "title": "Pets",
+      "description": "Animals we keep at home",
       "questions": [
         {
           "id": 1,
-          "title": "q1 title",
-          "content": "q1 content",
+          "content": "Which animals can be considered pets?",
           "mode": "select",
-          "minEntries": 1,
-          "maxEntries": 1,
+          "minCorrectEntries": 2,
+          "correctEntryMatch": { "id": [1, 2] },
           "answers": [
-            {
-              "id": 1,
-              "content": "q1a1 content",
-              "correct": true
-            },
-            {
-              "id": 2,
-              "content": "q1a2 content"
-            }
+            { "id": 1, "content": "Cat" },
+            { "id": 2, "content": "Dog" },
+            { "id": 3, "content": "Lion" }
           ]
         },
         {
           "id": 2,
-          "title": "q2 title",
-          "content": "q2 content",
+          "content": "Select two smallest pets",
           "mode": "select",
           "minEntries": 2,
-          "minCorrectEntries": 1,
+          "maxEntries": 2,
+          "minCorrectEntries": 2,
+          "correctEntryMatch": { "id": [2, 3] },
           "answers": [
-            {
-              "id": 1,
-              "content": "q2a1 content",
-              "correct": true
-            },
-            {
-              "id": 2,
-              "content": "q2a2 content",
-              "correct": true
-            },
-            {
-              "id": 3,
-              "content": "q2a3 content"
-            }
+            { "id": 1, "content": "Cat" },
+            { "id": 2, "content": "Hamster" },
+            { "id": 3, "content": "Rat" },
+            { "id": 4, "content": "Dog" }
           ]
         }
       ]
     },
     {
       "id": 2,
-      "title": "s2 title",
-      "description": "s2 description",
+      "title": "Farm animals",
+      "description": "Animals at farms",
       "questions": [
         {
           "id": 3,
-          "title": "q3 title",
-          "content": "q3 content",
+          "content": "Which farm animal gives us milk?",
           "mode": "input",
-          "maxEntries": 1
+          "minEntries": 1,
+          "maxEntries": 1,
+          "minCorrectEntries": 1,
+          "correctEntryMatch": { "content": ["cow"] }
         },
         {
           "id": 4,
-          "title": "q4 title",
-          "content": "q4 content",
-          "mode": "input",
-          "maxEntries": 3,
-          "minEntries": 1
+          "content": "Name at least 3 farm animals",
+          "mode": "select",
+          "minEntries": 3,
+          "minCorrectEntries": 2,
+          "maxWrongEntries": 1,
+          "correctEntryMatch": { "content": ["cow", "pig", "horse"] },
+          "answers": [
+            { "id": 1, "content": "Cow" },
+            { "id": 2, "content": "Lizard" },
+            { "id": 3, "content": "Pig" },
+            { "id": 4, "content": "Giraffe" },
+            { "id": 5, "content": "Horse" }
+          ]
         }
       ]
     }
@@ -164,12 +78,22 @@ const open_exam_quiz_input = `
 }
 `
 
-const event_input = JSON.stringify([
-  { event: "selectAnswers", questionId: 1, answerId: 1}
-])
+const open_exam_event_log_input = `
+{
+  "uid": "open_exam_quiz",
+  "version": 1,
+  "events": [
+    { "event": "selectAnswers", "questionId": 1, "answerIds": [1, 2] },
+    { "event": "selectAnswers", "questionId": 2, "answerIds": [3, 4] },
+    { "event": "clearAnswers", "questionId": 2 },
+    { "event": "selectAnswers", "questionId": 2, "answerIds": [2, 3] },
+    { "event": "inputAnswers", "questionId": 3, "inputs": ["Cow"] },
+    { "event": "selectAnswers", "questionId": 4, "answerIds": [1, 2, 3] }
+  ]
+}
+`
 
 window.wasm = wasm;
 
-window.event_input = event_input
-window.create_open_survey = function(event_input) { return new wasm.Quiz(open_survey_quiz_input, event_input) }
+window.open_exam_event_log_input = open_exam_event_log_input
 window.create_open_exam = function(event_input) { return new wasm.Quiz(open_exam_quiz_input, event_input) }
