@@ -7,6 +7,10 @@ const open_exam_quiz_input = `
   "title": "Animals exam",
   "description": "How well do you know animals?",
   "mode": "open",
+  "minAnsweredQuestions": 4,
+  "minCorrectQuestions": 4,
+  "maxWrongQuestions": 1,
+  "blockAnswerUpdatesFor": ["answeredCorrectly"],
   "sections": [
     {
       "id": 1,
@@ -49,12 +53,13 @@ const open_exam_quiz_input = `
       "questions": [
         {
           "id": 3,
+          "optional": true,
           "content": "Which farm animal gives us milk?",
           "mode": "input",
-          "minEntries": 1,
-          "maxEntries": 1,
-          "minCorrectEntries": 1,
-          "correctEntryMatch": { "content": ["cow"] }
+          "minEntries": 2,
+          "maxEntries": 2,
+          "minCorrectEntries": 2,
+          "correctEntryMatch": { "content": ["cow", "goat"] }
         },
         {
           "id": 4,

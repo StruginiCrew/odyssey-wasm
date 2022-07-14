@@ -22,7 +22,7 @@ impl Quiz {
     }
 
     #[wasm_bindgen(getter)]
-    pub fn title(&self) -> String {
+    pub fn title(&mut self) -> String {
         match self.runner.quiz_view().title() {
             Some(title) => title.clone(),
             None => String::new(),
@@ -30,7 +30,7 @@ impl Quiz {
     }
 
     #[wasm_bindgen(getter)]
-    pub fn description(&self) -> String {
+    pub fn description(&mut self) -> String {
         match self.runner.quiz_view().description() {
             Some(description) => description.clone(),
             None => String::new(),
@@ -38,7 +38,15 @@ impl Quiz {
     }
 
     #[wasm_bindgen(getter)]
-    pub fn sections(&self) -> Result<JsValue, JsValue> {
+    pub fn quiz(&mut self) -> Result<JsValue, JsValue> {
+        match serde_wasm_bindgen::to_value(&self.runner.quiz_view()) {
+            Ok(view) => Ok(view),
+            Err(err) => Err(serde_wasm_bindgen::to_value(&format!("{:?}", err))?),
+        }
+    }
+
+    #[wasm_bindgen(getter)]
+    pub fn sections(&mut self) -> Result<JsValue, JsValue> {
         match serde_wasm_bindgen::to_value(&self.runner.quiz_view().sections()) {
             Ok(sections) => Ok(sections),
             Err(err) => Err(serde_wasm_bindgen::to_value(&format!("{:?}", err))?),
@@ -46,7 +54,7 @@ impl Quiz {
     }
 
     #[wasm_bindgen]
-    pub fn section(&self, section_number: usize) -> Result<JsValue, JsValue> {
+    pub fn section(&mut self, section_number: usize) -> Result<JsValue, JsValue> {
         match self.runner.section_view(section_number) {
             Ok(view) => Ok(serde_wasm_bindgen::to_value(&view)?),
             Err(err) => Err(serde_wasm_bindgen::to_value(&format!("{:?}", err))?),
@@ -54,7 +62,7 @@ impl Quiz {
     }
 
     #[wasm_bindgen]
-    pub fn question(&self, question_number: usize) -> Result<JsValue, JsValue> {
+    pub fn question(&mut self, question_number: usize) -> Result<JsValue, JsValue> {
         match self.runner.question_view(question_number) {
             Ok(view) => Ok(serde_wasm_bindgen::to_value(&view)?),
             Err(err) => Err(serde_wasm_bindgen::to_value(&format!("{:?}", err))?),
