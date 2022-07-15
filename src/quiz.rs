@@ -1,4 +1,4 @@
-use odyssey::{QuizMode, Runner};
+use odyssey::Runner;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -18,22 +18,6 @@ impl Quiz {
         match runner {
             Ok(runner) => Ok(Quiz { runner }),
             Err(err) => Err(serde_wasm_bindgen::to_value(&format!("{:?}", err))?),
-        }
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn title(&mut self) -> String {
-        match self.runner.quiz_view().title() {
-            Some(title) => title.clone(),
-            None => String::new(),
-        }
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn description(&mut self) -> String {
-        match self.runner.quiz_view().description() {
-            Some(description) => description.clone(),
-            None => String::new(),
         }
     }
 
@@ -69,7 +53,7 @@ impl Quiz {
         }
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = selectAnswers)]
     pub fn select_answers(
         &mut self,
         question_number: usize,
@@ -81,7 +65,7 @@ impl Quiz {
         }
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = inputAnswers)]
     pub fn input_answers(
         &mut self,
         question_number: usize,
@@ -95,7 +79,7 @@ impl Quiz {
         }
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = clearAnswers)]
     pub fn clear_answers(&mut self, question_number: usize) -> Result<(), JsValue> {
         match self.runner.clear_answers(question_number) {
             Ok(_) => Ok(()),
@@ -103,7 +87,7 @@ impl Quiz {
         }
     }
 
-    #[wasm_bindgen(getter)]
+    #[wasm_bindgen(getter, js_name = eventLog)]
     pub fn event_log(&self) -> Result<JsValue, JsValue> {
         match serde_wasm_bindgen::to_value(&self.runner.event_log()) {
             Ok(log) => Ok(log),
