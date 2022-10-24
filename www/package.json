@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server"
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && webpack --config webpack.config.js",
+    "start": "export NODE_OPTIONS=--openssl-legacy-provider && webpack-dev-server"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.0",

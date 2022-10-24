@@ -12,7 +12,7 @@ default = ["console_error_panic_hook"]
 
 [dependencies]
 # WASM
-wasm-bindgen = { version = "0.2.63", features = ["serde-serialize"] }
+wasm-bindgen = { version = "=0.2.82", features = ["serde-serialize"] }
 console_error_panic_hook = { version = "0.1.6", optional = true }
 wee_alloc = { version = "0.4.5", optional = true }
 anyhow = "1.0"
